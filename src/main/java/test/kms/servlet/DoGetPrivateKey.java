@@ -8,27 +8,22 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import test.kms.management.KeyManagement;
+
 public class DoGetPrivateKey extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
-
-	public DoGetPrivateKey() {
-		super();
-	}
-
-	@Override
-	public void destroy() {
-		super.destroy();
-	}
 	
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		response.setContentType("text/html");
+		String name = request.getParameter("name");
+		
+		String priKey = KeyManagement.getPriavteKey(name);
+		
 		PrintWriter out = response.getWriter();
-		String uri = request.getRequestURI();
-		out.println("<BODY BGCOLOR=\"#FDF5E6\">\n" + "<H2>URI: " + uri
-				+ "</H2>\n" + "</BODY></HTML>");
+		out.println(priKey);
 		out.close();
 	}
 

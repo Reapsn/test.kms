@@ -8,18 +8,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import test.kms.management.KeyManagement;
+
 public class DoGetPublicKey extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
-
-	public DoGetPublicKey() {
-		super();
-	}
-
-	@Override
-	public void destroy() {
-		super.destroy();
-	}
 	
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -27,12 +20,10 @@ public class DoGetPublicKey extends HttpServlet {
 		response.setContentType("text/html");
 		String name = request.getParameter("name");
 		
-		
+		String pubKey = KeyManagement.getPublicKey(name);
 		
 		PrintWriter out = response.getWriter();
-		String uri = request.getRequestURI();
-		out.println("<BODY BGCOLOR=\"#FDF5E6\">\n" + "<H2>URI: " + uri
-				+ "</H2>\n" + "</BODY></HTML>");
+		out.println(pubKey);
 		out.close();
 	}
 
