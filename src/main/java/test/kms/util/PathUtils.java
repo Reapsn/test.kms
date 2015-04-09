@@ -5,7 +5,7 @@ import java.net.URL;
 
 public class PathUtils {
 	
-	private static URL findClassPathUri(Class<?> cls) {
+	public static URL findClassPathUri(Class<?> cls) {
 		// Get current class resource URL
 		ClassLoader loader = cls.getClassLoader();
 		String className = cls.getCanonicalName();
