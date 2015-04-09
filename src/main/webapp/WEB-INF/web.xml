@@ -36,7 +36,7 @@
 	</servlet>
 
 	<servlet-mapping>
-		<servlet-name>TestServlet</servlet-name>
+		<servlet-name>DoGetPrivateKey</servlet-name>
 		<url-pattern>/getPrivateKey</url-pattern>
 	</servlet-mapping>
 
