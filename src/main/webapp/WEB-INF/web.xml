@@ -40,5 +40,14 @@
 		<url-pattern>/getPrivateKey</url-pattern>
 	</servlet-mapping>
 
+	<servlet>
+		<servlet-name>DoGetKeyPair</servlet-name>
+		<servlet-class>test.kms.servlet.DoGetKeyPair</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>DoGetKeyPair</servlet-name>
+		<url-pattern>/getKeyPair</url-pattern>
+	</servlet-mapping>
 
 </web-app>

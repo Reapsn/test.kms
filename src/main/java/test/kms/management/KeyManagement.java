@@ -24,9 +24,15 @@ public class KeyManagement {
 		STORE_PATH = homePath + File.separatorChar + "store";
 	}
 	
-	public static String getStringPublicKey(String name, int length, boolean autoGenerate) {
-		
-		if (existKey(name, length)) {
+	public static String getStringPublicKey(String name, int length, boolean genNewKey, boolean autoGenFirstKey) {
+		if (genNewKey) {
+			try {
+				saveNewKeyPair(name, length);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return getStringPublicKey(name, length, false, false);
+		} else if (existKey(name, length)) {
 			File pubKey = new File(STORE_PATH + File.separatorChar + name + length + File.separatorChar + PUB_KEY);
 			
 			try {
@@ -35,36 +41,34 @@ public class KeyManagement {
 			} catch (IOException e) {
 				return "notfindkey";
 			}
-		} else if (autoGenerate) {
-			try {
-				saveNewKeyPair(name, length);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			return getStringPublicKey(name, length, false);
+		} else if (autoGenFirstKey) {
+			return getStringPublicKey(name, length, true, false);
 		} else {
 			return "notfindkey";
 		}
 	}
 	
-	public static String getStringPriavteKey(String name, int length, boolean autoGenerate) {
-		if (existKey(name, length)) {
-			File priKey = new File(STORE_PATH + File.separatorChar + name + length + File.separatorChar + PRI_KEY);
-			
-			try {
-				String stringPriKey = FileUtils.readFileToString(priKey);
-				
-				return stringPriKey;
-			} catch (IOException e) {
-				return "notfindkey";
-			}
-		} else if (autoGenerate) {
+	public static String getStringPriavteKey(String name, int length, boolean genNewKey, boolean autoGenFirstKey) {
+		if (genNewKey) {
 			try {
 				saveNewKeyPair(name, length);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			return getStringPriavteKey(name, length, false);
+			return getStringPriavteKey(name, length, false, false);
+		} else if (existKey(name, length)) {
+			File priKey = new File(STORE_PATH + File.separatorChar + name
+					+ length + File.separatorChar + PRI_KEY);
+
+			try {
+				String stringPriKey = FileUtils.readFileToString(priKey);
+
+				return stringPriKey;
+			} catch (IOException e) {
+				return "notfindkey";
+			}
+		} else if (autoGenFirstKey) {
+			return getStringPriavteKey(name, length, true, false);
 		} else {
 			return "notfindkey";
 		}

@@ -2,7 +2,6 @@ package test.kms.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -12,7 +11,7 @@ import org.apache.commons.lang3.BooleanUtils;
 
 import test.kms.management.KeyManagement;
 
-public class DoGetPublicKey extends HttpServlet {
+public class DoGetKeyPair extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -33,15 +32,17 @@ public class DoGetPublicKey extends HttpServlet {
 		}
 		boolean genNewKey = false;
 		try {
-			String strGenNewKey = request.getParameter("gennewkey");			
+			String strGenNewKey = request.getParameter("gennewkey");
 			genNewKey = BooleanUtils.toBoolean(strGenNewKey);
 		} catch (Exception e) {
 			;// ignore
 		}
-		String pubKey = KeyManagement.getStringPublicKey(name, length, genNewKey, true);
+		
+		String priKey = KeyManagement.getStringPriavteKey(name, length, genNewKey, true);
+		String pubKey = KeyManagement.getStringPublicKey(name, length, false, false);
 		
 		PrintWriter out = response.getWriter();
-		out.print(pubKey);
+		out.print(priKey + " " + pubKey);
 		out.close();
 	}
 

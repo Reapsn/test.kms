@@ -31,20 +31,18 @@ public class DoGetPrivateKey extends HttpServlet {
 		} catch (Exception e) {
 			;// ignore
 		}
-		boolean autoGenerate = true;
+		boolean genNewKey = false;
 		try {
-			String strAutoGenerate = request.getParameter("generate");
-			if (strAutoGenerate != null) {				
-				autoGenerate = BooleanUtils.toBoolean(strAutoGenerate);
-			}
+			String strGenNewKey = request.getParameter("gennewkey");
+			genNewKey = BooleanUtils.toBoolean(strGenNewKey);
 		} catch (Exception e) {
 			;// ignore
 		}
 		
-		String priKey = KeyManagement.getStringPriavteKey(name, length, autoGenerate);
+		String priKey = KeyManagement.getStringPriavteKey(name, length, genNewKey, true);
 		
 		PrintWriter out = response.getWriter();
-		out.println(priKey);
+		out.print(priKey);
 		out.close();
 	}
 
