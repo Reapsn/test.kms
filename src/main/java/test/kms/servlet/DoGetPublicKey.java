@@ -23,7 +23,7 @@ public class DoGetPublicKey extends HttpServlet {
 		String name = request.getParameter("name");
 		int length = 1024;
 		try {
-			String strLength = request.getParameter("lenght");
+			String strLength = request.getParameter("length");
 			length = Integer.parseInt(strLength);
 			if (length != 2048) {
 				length = 1024;
