@@ -13,6 +13,7 @@ import org.apache.commons.lang3.BooleanUtils;
 
 import test.kms.cipher.CipherUtils;
 import test.kms.management.KeyManagement;
+import test.kms.util.StringUtils;
 
 public class DoGetKeyPair extends HttpServlet {
 
@@ -21,36 +22,43 @@ public class DoGetKeyPair extends HttpServlet {
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		response.setContentType("text/html");
-		String name = request.getParameter("name");
-		int length = 1024;
 		try {
-			String strLength = request.getParameter("length");
-			length = Integer.parseInt(strLength);
-			if (length != 2048) {
-				length = 1024;
+			response.setContentType("text/html");
+			String data = request.getParameter("data");
+			data = new String(CipherUtils.decrypt(Base64.getDecoder().decode(
+					data)));
+			String name = StringUtils.getValueFromDn(data, "name");
+			int length = 1024;
+			try {
+				String strLength = StringUtils.getValueFromDn(data, "length");
+				length = Integer.parseInt(strLength);
+				if (length != 2048) {
+					length = 1024;
+				}
+			} catch (Exception e) {
+				;// ignore
 			}
-		} catch (Exception e) {
-			;// ignore
-		}
-		boolean genNewKey = false;
-		try {
-			String strGenNewKey = request.getParameter("gennewkey");
-			genNewKey = BooleanUtils.toBoolean(strGenNewKey);
-		} catch (Exception e) {
-			;// ignore
-		}
-		
-		String priKey = KeyManagement.getStringPriavteKey(name, length, genNewKey, true);
-		String pubKey = KeyManagement.getStringPublicKey(name, length, false, false);
-		
-		PrintWriter out = response.getWriter();
-		try {
-			out.print(Base64.getEncoder().encodeToString(CipherUtils.encrypt((priKey + " " + pubKey).getBytes())));
+			boolean genNewKey = false;
+			try {
+				String strGenNewKey = StringUtils.getValueFromDn(data, "gennewkey");
+				genNewKey = BooleanUtils.toBoolean(strGenNewKey);
+			} catch (Exception e) {
+				;// ignore
+			}
+
+			String priKey = KeyManagement.getStringPriavteKey(name, length,
+					genNewKey, true);
+			String pubKey = KeyManagement.getStringPublicKey(name, length,
+					false, false);
+
+			PrintWriter out = response.getWriter();
+
+			out.print(Base64.getEncoder().encodeToString(
+					CipherUtils.encrypt((priKey + " " + pubKey).getBytes())));
+			out.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		out.close();
 	}
 
 	@Override

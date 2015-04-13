@@ -16,8 +16,6 @@ public class CipherUtils {
 	 * 
 	 * @param datasource
 	 *            byte[]
-	 * @param password
-	 *            String
 	 * @return byte[]
 	 * @throws Exception 
 	 */
@@ -42,8 +40,6 @@ public class CipherUtils {
 	 * 
 	 * @param datasource
 	 *            byte[]
-	 * @param password
-	 *            String
 	 * @return byte[]
 	 * @throws Exception 
 	 */
