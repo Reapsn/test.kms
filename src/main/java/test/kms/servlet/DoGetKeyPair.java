@@ -2,6 +2,8 @@ package test.kms.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Base64;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -9,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.BooleanUtils;
 
+import test.kms.cipher.CipherUtils;
 import test.kms.management.KeyManagement;
 
 public class DoGetKeyPair extends HttpServlet {
@@ -42,7 +45,11 @@ public class DoGetKeyPair extends HttpServlet {
 		String pubKey = KeyManagement.getStringPublicKey(name, length, false, false);
 		
 		PrintWriter out = response.getWriter();
-		out.print(priKey + " " + pubKey);
+		try {
+			out.print(Base64.getEncoder().encodeToString(CipherUtils.encrypt((priKey + " " + pubKey).getBytes())));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		out.close();
 	}
 
